@@ -23,7 +23,7 @@ public class HelloApplication extends Application {
         stage.setScene(scene);
         stage.show();*/
 
-        stage.setTitle("TextField test");
+        stage.setTitle("Baudot App");
         Group root = new Group();
         Scene scene = new Scene(root, 650, 700, Color.WHITE);
 
@@ -125,9 +125,9 @@ public class HelloApplication extends Application {
     }
 
     public static String add(String string1, String string2) {
-        int xValue = 0;
-        int yValue = 0;
-        String ans = new String();
+        int xValue;
+        int yValue;
+        String ans = "";
 
         String ct1 = formatString(string1);
         String ct2 = formatString(string2);
@@ -210,7 +210,7 @@ public class HelloApplication extends Application {
 
 
         for(int i = 0; i < ct1.length(); i++) {
-            if (Character.isUpperCase(ct1.charAt(i))) {
+            /*if (Character.isUpperCase(ct1.charAt(i))) {
                 xValue = ct1.charAt(i) - 65;
             } else if (Character.isLowerCase(ct1.charAt(i))) {
                 xValue = ct1.charAt(i) - 97;
@@ -258,7 +258,10 @@ public class HelloApplication extends Application {
                 if (ct2.charAt(i) == '/') {
                     yValue = 31;
                 }
-            }
+            }*/
+
+            xValue = checkString(ct1, i);
+            yValue = checkString(ct2, i);
 
             ans = ans + additionTable[xValue][yValue];
         }
@@ -274,5 +277,34 @@ public class HelloApplication extends Application {
             }
         }
         return tmp;
+    }
+
+    public static int checkString(String ct, int i){
+        int Value = 0;
+            if (Character.isUpperCase(ct.charAt(i))) {
+                Value = ct.charAt(i) - 65;
+            } else if (Character.isLowerCase(ct.charAt(i))) {
+                Value = ct.charAt(i) - 97;
+            } else {
+                if (ct.charAt(i) == '8') {
+                    Value = 26;
+                }
+                if (ct.charAt(i) == '5') {
+                    Value = 27;
+                }
+                if (ct.charAt(i) == '3') {
+                    Value = 28;
+                }
+                if (ct.charAt(i) == '4') {
+                    Value = 29;
+                }
+                if (ct.charAt(i) == '9') {
+                    Value = 30;
+                }
+                if (ct.charAt(i) == '/') {
+                    Value = 31;
+                }
+            }
+        return Value;
     }
 }
