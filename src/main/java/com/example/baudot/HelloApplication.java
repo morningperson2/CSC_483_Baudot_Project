@@ -9,10 +9,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class HelloApplication extends Application {
     @Override
@@ -120,8 +122,189 @@ public class HelloApplication extends Application {
         return area;
     }
 
-    public static TilePane cryptanalysis(){
-        return new TilePane();
+    public static HBox cryptanalysis(){
+        HBox area = new HBox();
+        VBox vb1 = new VBox();
+        VBox vb2 = new VBox();
+        VBox vb3 = new VBox();
+        HBox row1 = new HBox();
+        HBox row2 = new HBox();
+        HBox row3 = new HBox();
+        HBox row4 = new HBox();
+
+        TextArea ct1 = new TextArea();
+        ct1.setPromptText("Cipher Text 1");
+        TextArea ct2 = new TextArea();
+        ct2.setPromptText("Cipher Text 2");
+        TextArea pt = new TextArea();
+        pt.setPromptText("Crib");
+        TextArea out = new TextArea();
+        out.setPromptText("Output");
+
+        int lenmess = 20;
+        TextArea[] firstrow = new TextArea[lenmess];
+        for (int i = 0; i < lenmess; i++) {
+            firstrow[i] = new TextArea();
+            firstrow[i].setPrefHeight(20);
+            firstrow[i].setPrefWidth(20);
+        }
+        TextArea[] secrow = new TextArea[lenmess];
+        for (int i = 0; i < lenmess; i++) {
+            secrow[i] = new TextArea();
+            secrow[i].setPrefHeight(20);
+            secrow[i].setPrefWidth(20);
+        }
+        TextArea[] thirow = new TextArea[lenmess];
+        for (int i = 0; i < lenmess; i++) {
+            thirow[i] = new TextArea();
+            thirow[i].setPrefHeight(20);
+            thirow[i].setPrefWidth(20);
+        }
+        TextArea pt2 = new TextArea();
+        pt2.setPromptText("Plaintext");
+
+        Label l1 = new Label("Cipher Text 1");
+        Label l2 = new Label("Cipher Text 2");
+        Label l3 = new Label("Crib");
+        Label l4 = new Label("Output");
+        Label l5 = new Label("CT1 + CT2");
+        Label l6 = new Label("Crib");
+        Label l7 = new Label("PT");
+        Label l8 = new Label("Plaintext");
+
+        Button b1 = new Button("Setup");
+        Button b2 = new Button("Shift Left");
+        Button b3 = new Button("Shift Right");
+
+        AtomicInteger position = new AtomicInteger();
+        AtomicReference<String> addition = new AtomicReference<String>("");
+        AtomicReference<String> result = new AtomicReference<>("");
+
+        EventHandler<ActionEvent> event = actionEvent -> {
+            String crib = pt.getText();
+            String temp = "";
+            result.set(add(ct1.getText(), ct2.getText()));
+            position.set(0);
+            out.setText(result.get());
+            for (int i = 0; i < crib.length(); i++) {
+                temp = temp + result.get().charAt(i);
+            }
+            addition.set(add(temp, crib));
+            for (int i = 0; i < result.get().length(); i++) {
+                firstrow[i].setText(String.valueOf(result.get().charAt(i)));
+            }
+            for (int i = 0; i < crib.length(); i++) {
+                secrow[i].setText(String.valueOf(crib.charAt(i)));
+            }
+            for (int i = 0; i < addition.get().length(); i++) {
+                thirow[i].setText(String.valueOf(addition.get().charAt(i)));
+            }
+            pt2.setText(addition.get());
+        };
+
+        /*EventHandler<ActionEvent> event2 = actionEvent -> {
+            if (position.get() > 0) {
+                String temp = "";
+                for (int i = position.get(); i < pt.getText().length(); i++) {
+                    temp = temp + result.get().charAt(i);
+                }
+                addition.set(add(temp, result.get()));
+                position.getAndDecrement();
+                for (int i = 0; i < lenmess; i++) {
+                    secrow[i].setText("");
+                }
+                for (int i = 0; i < lenmess; i++) {
+                    thirow[i].setText("");
+                }
+                int j = 0;
+                for (int i = position.get(); i < ct1.getText().length(); i++) {
+                    secrow[i].setText(String.valueOf(pt.getText().charAt(j)));
+                    thirow[i].setText(String.valueOf(addition.get().charAt(j)));
+                    j++;
+                }
+                pt2.setText(addition.get());
+            }
+        };
+
+        EventHandler<ActionEvent> event3 = actionEvent -> {
+            if (position.get() < lenmess - pt.getText().length()) {
+                String temp = "";
+                for (int i = position.get(); i < pt.getText().length(); i++) {
+                    temp = temp + result.get().charAt(i);
+                }
+                addition.set(add(temp, result.get()));
+                position.getAndIncrement();
+                for (int i = 0; i < lenmess; i++) {
+                    secrow[i].setText("");
+                }
+                for (int i = 0; i < lenmess; i++) {
+                    thirow[i].setText("");
+                }
+                int j = 0;
+                for (int i = position.get(); i <= ct1.getText().length(); i++) {
+                    if (j < ct1.getText().length() - pt.getText().length()) {
+                        secrow[i].setText(String.valueOf(pt.getText().charAt(j)));
+                        thirow[i].setText(String.valueOf(addition.get().charAt(j)));
+                        j++;
+                    }
+                }
+            }
+        };*/
+
+        b1.setOnAction(event);
+        /*b2.setOnAction(event2);
+        b3.setOnAction(event3);*/
+
+        vb1.getChildren().add(l1);
+        vb1.getChildren().add(ct1);
+        vb1.getChildren().add(l2);
+        vb1.getChildren().add(ct2);
+        vb1.getChildren().add(b1);
+        vb1.getChildren().add(l3);
+        vb1.getChildren().add(pt);
+        vb1.setAlignment(Pos.CENTER);
+
+        vb2.getChildren().add(l1);
+        vb2.getChildren().add(ct1);
+        vb2.getChildren().add(l2);
+        vb2.getChildren().add(ct2);
+        vb2.getChildren().add(l3);
+        vb2.getChildren().add(pt);
+        vb2.getChildren().add(b1);
+        vb2.getChildren().add(l4);
+        vb2.getChildren().add(out);
+        vb2.setAlignment(Pos.CENTER);
+
+        for (int i = 0; i < lenmess; i++) {
+            row1.getChildren().add(firstrow[i]);
+        }
+
+        for (int i = 0; i < lenmess; i++) {
+            row2.getChildren().add(secrow[i]);
+        }
+
+        for (int i = 0; i < lenmess; i++) {
+            row3.getChildren().add(thirow[i]);
+        }
+
+        row4.getChildren().add(b2);
+        row4.getChildren().add(b3);
+
+        vb3.getChildren().add(l5);
+        vb3.getChildren().add(row1);
+        vb3.getChildren().add(l6);
+        vb3.getChildren().add(row2);
+        vb3.getChildren().add(l7);
+        vb3.getChildren().add(row3);
+        vb3.getChildren().add(row4);
+        vb3.getChildren().add(l8);
+        vb3.getChildren().add(pt2);
+
+        area.getChildren().add(vb1);
+        area.getChildren().add(vb2);
+        area.getChildren().add(vb3);
+
+        return area;
     }
 
     public static String add(String string1, String string2) {
