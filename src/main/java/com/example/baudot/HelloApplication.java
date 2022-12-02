@@ -180,6 +180,7 @@ public class HelloApplication extends Application {
         AtomicReference<String> addition = new AtomicReference<String>("");
         AtomicReference<String> result = new AtomicReference<>("");
 
+
         EventHandler<ActionEvent> event = actionEvent -> {
             String crib = pt.getText();
             String temp = "";
@@ -202,7 +203,8 @@ public class HelloApplication extends Application {
             pt2.setText(addition.get());
         };
 
-        /*EventHandler<ActionEvent> event2 = actionEvent -> {
+        /*
+        EventHandler<ActionEvent> event2 = actionEvent -> {
             if (position.get() > 0) {
                 String temp = "";
                 for (int i = position.get(); i < pt.getText().length(); i++) {
@@ -218,13 +220,16 @@ public class HelloApplication extends Application {
                 }
                 int j = 0;
                 for (int i = position.get(); i < ct1.getText().length(); i++) {
-                    secrow[i].setText(String.valueOf(pt.getText().charAt(j)));
-                    thirow[i].setText(String.valueOf(addition.get().charAt(j)));
-                    j++;
+                    if(j < pt.getText().length()) {
+                        secrow[i].setText(String.valueOf(pt.getText().charAt(j)));
+                        thirow[i].setText(String.valueOf(addition.get().charAt(j)));
+                        j++;
+                    }
                 }
                 pt2.setText(addition.get());
             }
         };
+
 
         EventHandler<ActionEvent> event3 = actionEvent -> {
             if (position.get() < lenmess - pt.getText().length()) {
@@ -241,19 +246,58 @@ public class HelloApplication extends Application {
                     thirow[i].setText("");
                 }
                 int j = 0;
-                for (int i = position.get(); i <= ct1.getText().length(); i++) {
-                    if (j < ct1.getText().length() - pt.getText().length()) {
+                for (int i = position.get(); i  <= ct1.getText().length(); i++) {
+                    //if (j < ct1.getText().length() - pt.getText().length()) {
+                    if(j < pt.getText().length()){
                         secrow[i].setText(String.valueOf(pt.getText().charAt(j)));
                         thirow[i].setText(String.valueOf(addition.get().charAt(j)));
                         j++;
                     }
                 }
             }
-        };*/
+        };
+        */
+        EventHandler<ActionEvent> event2 = ActionEvent -> {
+            if(!(position.get() - 1 < 0)){
+                position.getAndDecrement();
+                for (int i = 0; i < lenmess; i++) {
+                    secrow[i].setText("");
+                }
+                for (int i = 0; i < lenmess; i++) {
+                    thirow[i].setText("");
+                }
+                int j = position.get();
+                for (int i = 0; i < pt.getText().length(); i++) {
+                    secrow[i+j].setText(String.valueOf(pt.getText().charAt(i)));
+                    thirow[i+j].setText(String.valueOf(add(String.valueOf(pt.getText().charAt(i)), String.valueOf(ct1.getText().charAt(i+j)))));
+                }
+
+            }
+        };
+
+        EventHandler<ActionEvent> event3 = ActionEvent -> {
+          if(!(position.get() + pt.getText().length() + 1 > ct1.getText().length())){
+              position.getAndIncrement();
+              for (int i = 0; i < lenmess; i++) {
+                  secrow[i].setText("");
+              }
+              for (int i = 0; i < lenmess; i++) {
+                  thirow[i].setText("");
+              }
+              int j = position.get();
+              for (int i = 0; i < pt.getText().length(); i++) {
+                  secrow[i+j].setText(String.valueOf(pt.getText().charAt(i)));
+                  thirow[i+j].setText(String.valueOf(add(String.valueOf(pt.getText().charAt(i)), String.valueOf(ct1.getText().charAt(i+j)))));
+              }
+
+            }
+        };
 
         b1.setOnAction(event);
-        /*b2.setOnAction(event2);
-        b3.setOnAction(event3);*/
+
+        b2.setOnAction(event2);
+        b3.setOnAction(event3);
+
 
         vb1.getChildren().add(l1);
         vb1.getChildren().add(ct1);
