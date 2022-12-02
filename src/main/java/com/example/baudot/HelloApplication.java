@@ -179,23 +179,24 @@ public class HelloApplication extends Application {
         AtomicInteger position = new AtomicInteger();
         AtomicReference<String> addition = new AtomicReference<String>("");
         AtomicReference<String> result = new AtomicReference<>("");
+        AtomicReference<String> crib = new AtomicReference<>("");
 
 
         EventHandler<ActionEvent> event = actionEvent -> {
-            String crib = pt.getText();
+            crib.set(pt.getText());
             String temp = "";
             result.set(add(ct1.getText(), ct2.getText()));
             position.set(0);
             out.setText(result.get());
-            for (int i = 0; i < crib.length(); i++) {
+            for (int i = 0; i < crib.get().length(); i++) {
                 temp = temp + result.get().charAt(i);
             }
-            addition.set(add(temp, crib));
+            addition.set(add(temp, crib.get()));
             for (int i = 0; i < result.get().length(); i++) {
                 firstrow[i].setText(String.valueOf(result.get().charAt(i)));
             }
-            for (int i = 0; i < crib.length(); i++) {
-                secrow[i].setText(String.valueOf(crib.charAt(i)));
+            for (int i = 0; i < crib.get().length(); i++) {
+                secrow[i].setText(String.valueOf(crib.get().charAt(i)));
             }
             for (int i = 0; i < addition.get().length(); i++) {
                 thirow[i].setText(String.valueOf(addition.get().charAt(i)));
@@ -268,15 +269,15 @@ public class HelloApplication extends Application {
                 }
                 int j = position.get();
                 for (int i = 0; i < pt.getText().length(); i++) {
-                    secrow[i+j].setText(String.valueOf(pt.getText().charAt(i)));
-                    thirow[i+j].setText(String.valueOf(add(String.valueOf(pt.getText().charAt(i)), String.valueOf(ct1.getText().charAt(i+j)))));
+                    secrow[i+j].setText(String.valueOf(crib.get().charAt(i)));
+                    thirow[i+j].setText(String.valueOf(add(String.valueOf(crib.get().charAt(i)), String.valueOf(result.get().charAt(i+j)))));
                 }
 
             }
         };
 
         EventHandler<ActionEvent> event3 = ActionEvent -> {
-          if(!(position.get() + pt.getText().length() + 1 > ct1.getText().length())){
+          if(!(position.get() + crib.get().length() + 1 > result.get().length())){
               position.getAndIncrement();
               for (int i = 0; i < lenmess; i++) {
                   secrow[i].setText("");
@@ -286,8 +287,8 @@ public class HelloApplication extends Application {
               }
               int j = position.get();
               for (int i = 0; i < pt.getText().length(); i++) {
-                  secrow[i+j].setText(String.valueOf(pt.getText().charAt(i)));
-                  thirow[i+j].setText(String.valueOf(add(String.valueOf(pt.getText().charAt(i)), String.valueOf(ct1.getText().charAt(i+j)))));
+                  secrow[i+j].setText(String.valueOf(crib.get().charAt(i)));
+                  thirow[i+j].setText(String.valueOf(add(String.valueOf(crib.get().charAt(i)), String.valueOf(result.get().charAt(i+j)))));
               }
 
             }
