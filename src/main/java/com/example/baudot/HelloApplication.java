@@ -1,6 +1,8 @@
 package com.example.baudot;
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -144,21 +146,54 @@ public class HelloApplication extends Application {
         int lenmess = 20;
         TextArea[] firstrow = new TextArea[lenmess];
         for (int i = 0; i < lenmess; i++) {
-            firstrow[i] = new TextArea();
-            firstrow[i].setPrefHeight(20);
-            firstrow[i].setPrefWidth(20);
+            TextArea temp = new TextArea();
+            temp.setPrefHeight(20);
+            temp.setPrefWidth(20);
+            temp.lengthProperty().addListener(new ChangeListener<Number>() {
+                @Override
+                public void changed(ObservableValue<? extends Number> observableValue, Number oldvalue, Number newvalue) {
+                    if (newvalue.intValue() > oldvalue.intValue()) {
+                        if (temp.getText().length() >= 1) {
+                            temp.setText(temp.getText().substring(0, 1));
+                        }
+                    }
+                }
+            });
+            firstrow[i] = temp;
         }
         TextArea[] secrow = new TextArea[lenmess];
         for (int i = 0; i < lenmess; i++) {
-            secrow[i] = new TextArea();
-            secrow[i].setPrefHeight(20);
-            secrow[i].setPrefWidth(20);
+            TextArea temp = new TextArea();
+            temp.setPrefHeight(20);
+            temp.setPrefWidth(20);
+            temp.lengthProperty().addListener(new ChangeListener<Number>() {
+                @Override
+                public void changed(ObservableValue<? extends Number> observableValue, Number oldvalue, Number newvalue) {
+                    if (newvalue.intValue() > oldvalue.intValue()) {
+                        if (temp.getText().length() >= 1) {
+                            temp.setText(temp.getText().substring(0, 1));
+                        }
+                    }
+                }
+            });
+            secrow[i] = temp;
         }
         TextArea[] thirow = new TextArea[lenmess];
         for (int i = 0; i < lenmess; i++) {
-            thirow[i] = new TextArea();
-            thirow[i].setPrefHeight(20);
-            thirow[i].setPrefWidth(20);
+            TextArea temp = new TextArea();
+            temp.setPrefHeight(20);
+            temp.setPrefWidth(20);
+            temp.lengthProperty().addListener(new ChangeListener<Number>() {
+                @Override
+                public void changed(ObservableValue<? extends Number> observableValue, Number oldvalue, Number newvalue) {
+                    if (newvalue.intValue() > oldvalue.intValue()) {
+                        if (temp.getText().length() >= 1) {
+                            temp.setText(temp.getText().substring(0, 1));
+                        }
+                    }
+                }
+            });
+            thirow[i] = temp;
         }
         TextArea pt2 = new TextArea();
         pt2.setPromptText("Plaintext");
