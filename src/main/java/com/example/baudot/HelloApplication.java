@@ -145,6 +145,8 @@ public class HelloApplication extends Application {
 
         int lenmess = 20;
         TextArea[] firstrow = new TextArea[lenmess];
+        TextArea[] secrow = new TextArea[lenmess];
+        TextArea[] thirow = new TextArea[lenmess];
         for (int i = 0; i < lenmess; i++) {
             TextArea temp = new TextArea();
             temp.setPrefHeight(20);
@@ -161,11 +163,12 @@ public class HelloApplication extends Application {
             });
             firstrow[i] = temp;
         }
-        TextArea[] secrow = new TextArea[lenmess];
+        //TextArea[] secrow = new TextArea[lenmess];
         for (int i = 0; i < lenmess; i++) {
             TextArea temp = new TextArea();
             temp.setPrefHeight(20);
             temp.setPrefWidth(20);
+            int finalI = i;
             temp.lengthProperty().addListener(new ChangeListener<Number>() {
                 @Override
                 public void changed(ObservableValue<? extends Number> observableValue, Number oldvalue, Number newvalue) {
@@ -174,15 +177,24 @@ public class HelloApplication extends Application {
                             temp.setText(temp.getText().substring(0, 1));
                         }
                     }
+                    if(secrow[finalI].getText().equals("")) {
+                        secrow[finalI].setText("");
+                        thirow[finalI].setText("");
+                    }
+                    else{
+                        thirow[finalI].setText(add(String.valueOf(firstrow[finalI].getText().charAt(0)), String.valueOf(secrow[finalI].getText().charAt(0))));
+                    }
                 }
             });
+
             secrow[i] = temp;
         }
-        TextArea[] thirow = new TextArea[lenmess];
+        //TextArea[] thirow = new TextArea[lenmess];
         for (int i = 0; i < lenmess; i++) {
             TextArea temp = new TextArea();
             temp.setPrefHeight(20);
             temp.setPrefWidth(20);
+            int finalI = i;
             temp.lengthProperty().addListener(new ChangeListener<Number>() {
                 @Override
                 public void changed(ObservableValue<? extends Number> observableValue, Number oldvalue, Number newvalue) {
@@ -190,6 +202,14 @@ public class HelloApplication extends Application {
                         if (temp.getText().length() >= 1) {
                             temp.setText(temp.getText().substring(0, 1));
                         }
+                    }
+
+                    if(thirow[finalI].getText().equals("")) {
+                        secrow[finalI].setText("");
+                        thirow[finalI].setText("");
+                    }
+                    else{
+                        secrow[finalI].setText(add(String.valueOf(firstrow[finalI].getText().charAt(0)), String.valueOf(thirow[finalI].getText().charAt(0))));
                     }
                 }
             });
@@ -321,7 +341,7 @@ public class HelloApplication extends Application {
                   thirow[i].setText("");
               }
               int j = position.get();
-              for (int i = 0; i < pt.getText().length(); i++) {
+              for (int i = 0; i < crib.get().length(); i++) {
                   secrow[i+j].setText(String.valueOf(crib.get().charAt(i)));
                   thirow[i+j].setText(String.valueOf(add(String.valueOf(crib.get().charAt(i)), String.valueOf(result.get().charAt(i+j)))));
               }
@@ -394,6 +414,7 @@ public class HelloApplication extends Application {
 
         String ct1 = formatString(string1);
         String ct2 = formatString(string2);
+
         char[][] additionTable = {
                 {'/', 'G', 'F', 'R', '4', 'C', 'B', 'Q', 'S', '3', 'N', 'Z', '8', 'K', '5', 'Y', 'H', 'D', 'I', 'W', '9', 'X', 'T', 'V',
                         'P', 'L', 'M', 'O', 'J', 'E', 'U', 'A'},
