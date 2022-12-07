@@ -143,7 +143,7 @@ public class HelloApplication extends Application {
         TextArea out = new TextArea();
         out.setPromptText("Output");
 
-        int lenmess = 20;
+        int lenmess = 100000;
         TextArea[] firstrow = new TextArea[lenmess];
         TextArea[] secrow = new TextArea[lenmess];
         TextArea[] thirow = new TextArea[lenmess];
@@ -230,6 +230,7 @@ public class HelloApplication extends Application {
         Button b1 = new Button("Setup");
         Button b2 = new Button("Shift Left");
         Button b3 = new Button("Shift Right");
+        Button b4 = new Button("Print");
 
         AtomicInteger position = new AtomicInteger();
         AtomicReference<String> addition = new AtomicReference<String>("");
@@ -243,6 +244,19 @@ public class HelloApplication extends Application {
             result.set(add(ct1.getText(), ct2.getText()));
             position.set(0);
             out.setText(result.get());
+
+            for (int i = 0; i < result.get().length(); i++) {
+                row1.getChildren().add(firstrow[i]);
+            }
+
+            for (int i = 0; i < result.get().length(); i++) {
+                row2.getChildren().add(secrow[i]);
+            }
+
+            for (int i = 0; i < result.get().length(); i++) {
+                row3.getChildren().add(thirow[i]);
+            }
+
             for (int i = 0; i < crib.get().length(); i++) {
                 temp = temp + result.get().charAt(i);
             }
@@ -349,10 +363,27 @@ public class HelloApplication extends Application {
             }
         };
 
+        EventHandler<ActionEvent> event4 = ActionEvent -> {
+
+            String temp = "";
+            String temp2 = "";
+
+            for(int i = 0; i < secrow.length; i++){
+                temp = temp + secrow[i].getText();
+            }
+
+            for (int i = 0; i < thirow.length; i++) {
+                temp2 = temp2 + thirow[i].getText();
+            }
+
+            pt2.setText(temp + "\n\n" + temp2);
+        };
+
         b1.setOnAction(event);
 
         b2.setOnAction(event2);
         b3.setOnAction(event3);
+        b4.setOnAction(event4);
 
 
         vb1.getChildren().add(l1);
@@ -375,20 +406,21 @@ public class HelloApplication extends Application {
         vb2.getChildren().add(out);
         vb2.setAlignment(Pos.CENTER);
 
-        for (int i = 0; i < lenmess; i++) {
+        /*for (int i = 0; i < 20; i++) {
             row1.getChildren().add(firstrow[i]);
         }
 
-        for (int i = 0; i < lenmess; i++) {
+        for (int i = 0; i < 20; i++) {
             row2.getChildren().add(secrow[i]);
         }
 
-        for (int i = 0; i < lenmess; i++) {
+        for (int i = 0; i < 20; i++) {
             row3.getChildren().add(thirow[i]);
-        }
+        }*/
 
         row4.getChildren().add(b2);
         row4.getChildren().add(b3);
+        row4.getChildren().add(b4);
 
         vb3.getChildren().add(l5);
         vb3.getChildren().add(row1);
