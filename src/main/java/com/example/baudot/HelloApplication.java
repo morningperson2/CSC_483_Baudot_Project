@@ -5,6 +5,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -58,10 +59,9 @@ public class HelloApplication extends Application {
         launch();
     }
 
-    public static HBox encrypt(){
-        HBox area = new HBox();
-        VBox vb1 = new VBox();
-        VBox vb2 = new VBox();
+    public static VBox encrypt(){
+        VBox area = new VBox();
+
 
         TextArea ct1 = new TextArea();
         ct1.setPromptText("Cipher Text");
@@ -74,51 +74,24 @@ public class HelloApplication extends Application {
         Label l2 = new Label("Key");
         Label l3 = new Label("Plain Text");
 
-        Button b1 = new Button("Decrypt");
-        Button b2 = new Button("Encrypt");
-        Button b3 = new Button("Decrypt");
+        Button b1 = new Button("Print");
 
         EventHandler<ActionEvent> event = actionEvent -> pt.setText(add(ct1.getText(), ct2.getText()));
 
-        EventHandler<ActionEvent> encrypt = actionEvent -> {
 
-            b1.setText("Encrypt");
-            l1.setText("Plain Text");
-            l3.setText("Cipher Text");
-            ct1.setPromptText("Plain Text");
-            pt.setPromptText("Cipher Text");
-
-        };
-
-        EventHandler<ActionEvent> decrypt = actionEvent -> {
-
-            b1.setText("Decrypt");
-            l3.setText("Plain Text");
-            l1.setText("Cipher Text");
-            pt.setPromptText("Plain Text");
-            ct1.setPromptText("Cipher Text");
-
-        };
 
         b1.setOnAction(event);
-        b2.setOnAction(encrypt);
-        b3.setOnAction(decrypt);
 
-        vb1.getChildren().add(l1);
-        vb1.getChildren().add(ct1);
-        vb1.getChildren().add(l2);
-        vb1.getChildren().add(ct2);
-        vb1.getChildren().add(b1);
-        vb1.getChildren().add(l3);
-        vb1.getChildren().add(pt);
-        vb1.setAlignment(Pos.CENTER);
+        area.getChildren().add(l1);
+        area.getChildren().add(ct1);
+        area.getChildren().add(l2);
+        area.getChildren().add(ct2);
+        area.getChildren().add(b1);
+        area.getChildren().add(l3);
+        area.getChildren().add(pt);
+        area.setAlignment(Pos.CENTER);
 
-        vb2.getChildren().add(b2);
-        vb2.getChildren().add(b3);
-        vb2.setAlignment(Pos.CENTER);
 
-        area.getChildren().add(vb1);
-        area.getChildren().add(vb2);
 
 
         return area;
@@ -129,10 +102,12 @@ public class HelloApplication extends Application {
         VBox vb1 = new VBox();
         VBox vb2 = new VBox();
         VBox vb3 = new VBox();
+        VBox vb4 = new VBox();
         HBox row1 = new HBox();
         HBox row2 = new HBox();
         HBox row3 = new HBox();
         HBox row4 = new HBox();
+        HBox scroll = new HBox();
 
         TextArea ct1 = new TextArea();
         ct1.setPromptText("Cipher Text 1");
@@ -237,6 +212,9 @@ public class HelloApplication extends Application {
         AtomicReference<String> result = new AtomicReference<>("");
         AtomicReference<String> crib = new AtomicReference<>("");
 
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setHmax(30);
+
 
         EventHandler<ActionEvent> event = actionEvent -> {
             crib.set(pt.getText());
@@ -257,6 +235,18 @@ public class HelloApplication extends Application {
                 row3.getChildren().add(thirow[i]);
             }
 
+
+            scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+
+            vb3.getChildren().add(scrollPane);
+            vb3.getChildren().add(scroll);
+            vb3.getChildren().add(row4);
+            vb3.getChildren().add(l8);
+            vb3.getChildren().add(pt2);
+
+            area.getChildren().add(vb3);
+
+
             for (int i = 0; i < crib.get().length(); i++) {
                 temp = temp + result.get().charAt(i);
             }
@@ -270,7 +260,7 @@ public class HelloApplication extends Application {
             for (int i = 0; i < addition.get().length(); i++) {
                 thirow[i].setText(String.valueOf(addition.get().charAt(i)));
             }
-            pt2.setText(addition.get());
+            //pt2.setText(addition.get());
         };
 
         /*
@@ -376,6 +366,7 @@ public class HelloApplication extends Application {
                 temp2 = temp2 + thirow[i].getText();
             }
 
+
             pt2.setText(temp + "\n\n" + temp2);
         };
 
@@ -422,19 +413,25 @@ public class HelloApplication extends Application {
         row4.getChildren().add(b3);
         row4.getChildren().add(b4);
 
-        vb3.getChildren().add(l5);
-        vb3.getChildren().add(row1);
-        vb3.getChildren().add(l6);
-        vb3.getChildren().add(row2);
-        vb3.getChildren().add(l7);
-        vb3.getChildren().add(row3);
+
+
+        vb4.getChildren().add(l5);
+        vb4.getChildren().add(row1);
+        vb4.getChildren().add(l6);
+        vb4.getChildren().add(row2);
+        vb4.getChildren().add(l7);
+        vb4.getChildren().add(row3);
+
+        scrollPane.setContent(vb4);
+
+        /*vb3.getChildren().add(scroll);
         vb3.getChildren().add(row4);
         vb3.getChildren().add(l8);
-        vb3.getChildren().add(pt2);
+        vb3.getChildren().add(pt2);*/
 
         area.getChildren().add(vb1);
         area.getChildren().add(vb2);
-        area.getChildren().add(vb3);
+        //area.getChildren().add(vb3);
 
         return area;
     }
