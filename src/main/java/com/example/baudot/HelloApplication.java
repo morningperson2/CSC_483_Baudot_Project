@@ -16,6 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -208,6 +209,7 @@ public class HelloApplication extends Application {
         Button b4 = new Button("Print");
 
         AtomicInteger position = new AtomicInteger();
+        AtomicInteger alert = new AtomicInteger();
         AtomicReference<String> addition = new AtomicReference<String>("");
         AtomicReference<String> result = new AtomicReference<>("");
         AtomicReference<String> crib = new AtomicReference<>("");
@@ -217,50 +219,54 @@ public class HelloApplication extends Application {
 
 
         EventHandler<ActionEvent> event = actionEvent -> {
-            crib.set(pt.getText());
-            String temp = "";
-            result.set(add(ct1.getText(), ct2.getText()));
-            position.set(0);
-            out.setText(result.get());
+            if(HelloApplication.formatString(ct1.getText()).length() == HelloApplication.formatString(ct2.getText()).length()) {
+                crib.set(pt.getText());
+                String temp = "";
+                out.setText("");
+                result.set(add(ct1.getText(), ct2.getText()));
+                position.set(0);
 
-            for (int i = 0; i < result.get().length(); i++) {
-                row1.getChildren().add(firstrow[i]);
+                for (int i = 0; i < result.get().length(); i++) {
+                    row1.getChildren().add(firstrow[i]);
+                }
+
+                for (int i = 0; i < result.get().length(); i++) {
+                    row2.getChildren().add(secrow[i]);
+                }
+
+                for (int i = 0; i < result.get().length(); i++) {
+                    row3.getChildren().add(thirow[i]);
+                }
+
+
+                scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+
+                vb3.getChildren().add(scrollPane);
+                vb3.getChildren().add(scroll);
+                vb3.getChildren().add(row4);
+                vb3.getChildren().add(l8);
+                vb3.getChildren().add(pt2);
+
+                area.getChildren().add(vb3);
+
+
+                for (int i = 0; i < crib.get().length(); i++) {
+                    temp = temp + result.get().charAt(i);
+                }
+                addition.set(add(temp, crib.get()));
+                for (int i = 0; i < result.get().length(); i++) {
+                    firstrow[i].setText(String.valueOf(result.get().charAt(i)));
+                }
+                for (int i = 0; i < crib.get().length(); i++) {
+                    secrow[i].setText(String.valueOf(crib.get().charAt(i)));
+                }
+                for (int i = 0; i < addition.get().length(); i++) {
+                    thirow[i].setText(String.valueOf(addition.get().charAt(i)));
+                }
             }
-
-            for (int i = 0; i < result.get().length(); i++) {
-                row2.getChildren().add(secrow[i]);
+            else{
+                out.setText("Ciphertext 1 and Ciphertext 2 need to be the same length");
             }
-
-            for (int i = 0; i < result.get().length(); i++) {
-                row3.getChildren().add(thirow[i]);
-            }
-
-
-            scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-
-            vb3.getChildren().add(scrollPane);
-            vb3.getChildren().add(scroll);
-            vb3.getChildren().add(row4);
-            vb3.getChildren().add(l8);
-            vb3.getChildren().add(pt2);
-
-            area.getChildren().add(vb3);
-
-
-            for (int i = 0; i < crib.get().length(); i++) {
-                temp = temp + result.get().charAt(i);
-            }
-            addition.set(add(temp, crib.get()));
-            for (int i = 0; i < result.get().length(); i++) {
-                firstrow[i].setText(String.valueOf(result.get().charAt(i)));
-            }
-            for (int i = 0; i < crib.get().length(); i++) {
-                secrow[i].setText(String.valueOf(crib.get().charAt(i)));
-            }
-            for (int i = 0; i < addition.get().length(); i++) {
-                thirow[i].setText(String.valueOf(addition.get().charAt(i)));
-            }
-            //pt2.setText(addition.get());
         };
 
         /*
@@ -328,10 +334,9 @@ public class HelloApplication extends Application {
                 }
                 int j = position.get();
                 for (int i = 0; i < pt.getText().length(); i++) {
-                    secrow[i+j].setText(String.valueOf(crib.get().charAt(i)));
-                    thirow[i+j].setText(String.valueOf(add(String.valueOf(crib.get().charAt(i)), String.valueOf(result.get().charAt(i+j)))));
+                    secrow[i + j].setText(String.valueOf(crib.get().charAt(i)));
+                    thirow[i + j].setText(String.valueOf(add(String.valueOf(crib.get().charAt(i)), String.valueOf(result.get().charAt(i + j)))));
                 }
-
             }
         };
 
