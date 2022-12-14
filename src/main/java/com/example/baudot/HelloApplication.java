@@ -1,3 +1,11 @@
+/*
+Baudot code encryption, decryption, and cryptanalysis tool
+By: Cameron Bradshaw
+    Paul Huffman
+    Ethan Ison
+
+    This tool will allow the user to encrypt and decrypt messages using the Baudot character encoding.
+ */
 package com.example.baudot;
 
 import javafx.application.Application;
@@ -77,7 +85,14 @@ public class HelloApplication extends Application {
 
         Button b1 = new Button("Print");
 
-        EventHandler<ActionEvent> event = actionEvent -> pt.setText(add(ct1.getText(), ct2.getText()));
+        EventHandler<ActionEvent> event = actionEvent -> {
+            if(HelloApplication.formatString(ct1.getText()).length() == HelloApplication.formatString(ct2.getText()).length()){
+                pt.setText(add(ct1.getText(), ct2.getText()));
+            }
+            else {
+                pt.setText("Ciphertext and key need to be the same length");
+            }
+        };
 
 
 
@@ -127,6 +142,7 @@ public class HelloApplication extends Application {
             TextArea temp = new TextArea();
             temp.setPrefHeight(20);
             temp.setPrefWidth(20);
+            //listener will not allow character fields in cryptanalysis to exceed 1 character
             temp.lengthProperty().addListener(new ChangeListener<Number>() {
                 @Override
                 public void changed(ObservableValue<? extends Number> observableValue, Number oldvalue, Number newvalue) {
@@ -145,6 +161,8 @@ public class HelloApplication extends Application {
             temp.setPrefHeight(20);
             temp.setPrefWidth(20);
             int finalI = i;
+            //this listener will also keep character fields at a single character but also allows
+            //user to type in characters for cryptanalysis that will update the second message
             temp.lengthProperty().addListener(new ChangeListener<Number>() {
                 @Override
                 public void changed(ObservableValue<? extends Number> observableValue, Number oldvalue, Number newvalue) {
@@ -171,6 +189,8 @@ public class HelloApplication extends Application {
             temp.setPrefHeight(20);
             temp.setPrefWidth(20);
             int finalI = i;
+            //this listener will also keep character fields at a single character but also allows
+            //user to type in characters for cryptanalysis that will update the second message
             temp.lengthProperty().addListener(new ChangeListener<Number>() {
                 @Override
                 public void changed(ObservableValue<? extends Number> observableValue, Number oldvalue, Number newvalue) {
@@ -217,8 +237,10 @@ public class HelloApplication extends Application {
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setHmax(30);
 
-
+        //this is the handler for the Set button during cryptanalysis
         EventHandler<ActionEvent> event = actionEvent -> {
+            //this if statement won't allow the ciphertext messages to be different length as they must
+            //be the same for the encoding to work
             if(HelloApplication.formatString(ct1.getText()).length() == HelloApplication.formatString(ct2.getText()).length()) {
                 crib.set(pt.getText());
                 String temp = "";
@@ -323,6 +345,8 @@ public class HelloApplication extends Application {
             }
         };
         */
+
+        //handler for the shift left button in cryptanalysis
         EventHandler<ActionEvent> event2 = ActionEvent -> {
             if(!(position.get() - 1 < 0)){
                 position.getAndDecrement();
@@ -332,6 +356,8 @@ public class HelloApplication extends Application {
                 for (int i = 0; i < lenmess; i++) {
                     thirow[i].setText("");
                 }
+                //this is what XORs the crib with the cipher message during a shift so the crib will shift
+                //along the ciphertext message
                 int j = position.get();
                 for (int i = 0; i < pt.getText().length(); i++) {
                     secrow[i + j].setText(String.valueOf(crib.get().charAt(i)));
@@ -349,6 +375,8 @@ public class HelloApplication extends Application {
               for (int i = 0; i < lenmess; i++) {
                   thirow[i].setText("");
               }
+              //this is what XORs the crib with the cipher message during a shift so the crib will shift
+              //along the ciphertext message
               int j = position.get();
               for (int i = 0; i < crib.get().length(); i++) {
                   secrow[i+j].setText(String.valueOf(crib.get().charAt(i)));
@@ -358,6 +386,7 @@ public class HelloApplication extends Application {
             }
         };
 
+        //handler for the print button during cryptanalysis
         EventHandler<ActionEvent> event4 = ActionEvent -> {
 
             String temp = "";
@@ -441,14 +470,19 @@ public class HelloApplication extends Application {
         return area;
     }
 
+    //this function XORs the characters together to encode and decode the messages
+    //using the Baudot addition table.
     public static String add(String string1, String string2) {
         int xValue;
         int yValue;
         String ans = "";
 
+        //formatString eliminates spaces from the string so the ciphertext messages are essentially a
+        //constant string
         String ct1 = formatString(string1);
         String ct2 = formatString(string2);
 
+        //Baudot addition table, the slot at M[x][y] = x XOR y
         char[][] additionTable = {
                 {'/', 'G', 'F', 'R', '4', 'C', 'B', 'Q', 'S', '3', 'N', 'Z', '8', 'K', '5', 'Y', 'H', 'D', 'I', 'W', '9', 'X', 'T', 'V',
                         'P', 'L', 'M', 'O', 'J', 'E', 'U', 'A'},
@@ -587,16 +621,22 @@ public class HelloApplication extends Application {
 
     }
 
+    //takes in a string and goes through it character by character eliminating spaces and tabs
+    //because there are no provisions for spaces in the table for Baudot code
     public static String formatString(String string){
         String tmp = new String();
         for(int i = 0; i < string.length(); i++){
-            if(string.charAt(i) != ' ') {
+            if(string.charAt(i) != ' ' && string.charAt(i) != '\t') {
                 tmp = tmp + string.charAt(i);
             }
         }
         return tmp;
     }
 
+    //This converts the character to ASCII and then subtracts either 65 if it is Upper Case or 97 if it isn't
+    //this makes A = 0 B = 1 etc and a = 0 b = 1 etc. This way the characters can be used to for indices in
+    //Baudot table. Then because it is Baudot code we also need to check for the 6 unprintable characters
+    //that were rendered as 8, 5, 3, 4, 9, and / as table rows 26 - 31
     public static int checkString(String ct, int i){
         int Value = 0;
             if (Character.isUpperCase(ct.charAt(i))) {
