@@ -1,3 +1,11 @@
+/*
+Baudot code encryption, decryption, and cryptanalysis tool
+By: Cameron Bradshaw
+    Paul Huffman
+    Ethan Ison
+
+    This tool will allow the user to encrypt and decrypt messages using the Baudot character encoding.
+ */
 package com.example.baudot;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
